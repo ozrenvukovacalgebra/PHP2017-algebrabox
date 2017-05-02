@@ -32,7 +32,7 @@ if($result)
 {
 	echo '<div class="row">';
 	echo '<div class="col-md-10 col-md-offset-1">';
-	echo '<table class="table table-striped table-hover">';
+	echo '<table  id="popis_datoteka" class="table table-striped table-hover">';
 	echo '<tr><td></td><td>Naziv datoteke</td><td colspan="2">Operacija</td></tr>';
 	while($row = $result->fetch_assoc())
 	{
@@ -62,8 +62,8 @@ if($result)
 		echo "<tr>
 		<td><i class='fa fa-file$fileimg' aria-hidden='true'></i></td>
 		<td>{$row['naziv']}</td>
-		<td><a href='brisi_file.php?file_id={$row['id']}'>Briši</a></td>
-		<td><a href='uredi_file.php?file_id={$row['id']}'>Uredi</a></td>
+		<td><a id='brisi' href='brisi_file.php?file_id={$row['id']}'>Briši</a></td>
+		<td><a id='uredi' href='uredi_file.php?file_id={$row['id']}'>Uredi</a></td>
 		</tr>";
 	}
 	echo '</table>';
@@ -82,5 +82,36 @@ else
 	</div>
 </div>
 </div>
+<script>
+$(document).ready(function() {
+	$('#popis_datoteka').on('click', '#brisi', function(e){
+		e.preventDefault();
+		bootbox.confirm({
+			message: "Da li ste sigurni da želite izbrisati datoteku?",
+			buttons: {
+				confirm: {
+					label: 'Da',
+					className: 'btn-success'
+				},
+				cancel: {
+					label: 'Ne',
+					className: 'btn-danger'
+				}
+			},
+			callback: function (result) {
+				if(result) {
+					//idi na link
+					window.location = $('#brisi').attr("href")
+				}
+				else {
+					//vrati se na popis datoteka
+					window.location = 'popis_datoteka.php';
+				}
+				
+			}
+		});
+	});
+});
+</script>
 </body>
 </html>
